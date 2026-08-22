@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Físico — Nicolás</title>
+  <title>Dashboard Físico — Nicolás Romero</title>
   <style>
     :root {
       --bg: #0b1020;
@@ -68,14 +68,14 @@
 
     h1 {
       margin: 14px 0 8px;
-      font-size: clamp(30px, 6vw, 52px);
-      line-height: 0.96;
-      letter-spacing: -0.045em;
+      font-size: clamp(28px, 5.5vw, 48px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
     }
 
     .subtitle {
       margin: 0;
-      max-width: 720px;
+      max-width: 760px;
       color: var(--muted);
       font-size: 15px;
       line-height: 1.5;
@@ -125,15 +125,20 @@
       color: var(--text);
       background: rgba(255,255,255,0.06);
       border: 1px solid var(--line);
-      padding: 10px 12px;
+      padding: 10px 14px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .quick-nav a:hover {
+      background: rgba(124,156,255,0.18);
     }
 
     .section-title {
-      margin: 24px 0 10px;
-      font-size: 18px;
+      margin: 28px 0 12px;
+      font-size: 19px;
       letter-spacing: -0.02em;
     }
 
@@ -164,27 +169,56 @@
       font-size: 14px;
     }
 
-    .stats {
+    .schedule-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(1, minmax(0, 1fr));
       gap: 10px;
     }
 
-    .stat {
+    .schedule-item {
       border-radius: 16px;
       padding: 14px;
       background: rgba(255,255,255,0.04);
       border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .stat strong {
-      display: block;
-      font-size: 24px;
-      margin-bottom: 4px;
-      letter-spacing: -0.04em;
+    .schedule-item.gym {
+      border-left: 4px solid var(--accent);
     }
 
-    .goal-list, .session-list, .metric-list, .notes-list {
+    .schedule-item.hyrox {
+      border-left: 4px solid var(--accent-2);
+      background: rgba(94,234,212,0.05);
+    }
+
+    .schedule-item.rest {
+      border-left: 4px solid var(--muted);
+      opacity: 0.85;
+    }
+
+    .schedule-day {
+      font-size: 13px;
+      font-weight: 800;
+      color: #dbe5ff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .schedule-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .schedule-detail {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .goal-list, .metric-list, .notes-list {
       list-style: none;
       padding: 0;
       margin: 0;
@@ -212,8 +246,19 @@
       box-shadow: 0 0 18px rgba(124,156,255,0.65);
     }
 
+    .dot.cyan {
+      background: var(--accent-2);
+      box-shadow: 0 0 18px rgba(94,234,212,0.65);
+    }
+
+    .session-columns {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 14px;
+    }
+
     .session-card {
-      padding: 16px;
+      padding: 18px;
       border-radius: 20px;
       background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
       border: 1px solid var(--line);
@@ -224,14 +269,16 @@
       justify-content: space-between;
       gap: 12px;
       align-items: flex-start;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
     }
 
     .tag {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 700;
@@ -239,6 +286,12 @@
       color: #c9fff6;
       border: 1px solid rgba(94,234,212,0.22);
       white-space: nowrap;
+    }
+
+    .tag.accent {
+      background: rgba(124,156,255,0.12);
+      color: #d8e2ff;
+      border-color: rgba(124,156,255,0.25);
     }
 
     .session-name {
@@ -257,9 +310,9 @@
     .exercise {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
-      padding: 10px 0;
+      padding: 11px 0;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
@@ -267,40 +320,41 @@
 
     .exercise strong {
       display: block;
-      font-size: 14px;
+      font-size: 14.5px;
       margin-bottom: 3px;
     }
 
     .exercise span {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 12.5px;
       line-height: 1.35;
     }
 
     .set-box {
-      padding: 8px 10px;
+      padding: 8px 12px;
       border-radius: 12px;
-      background: rgba(124,156,255,0.10);
-      border: 1px solid rgba(124,156,255,0.18);
+      background: rgba(124,156,255,0.12);
+      border: 1px solid rgba(124,156,255,0.22);
       font-weight: 800;
       font-size: 13px;
       white-space: nowrap;
+      text-align: center;
     }
 
     .highlight {
       background: linear-gradient(180deg, rgba(124,156,255,0.12), rgba(124,156,255,0.06));
       border: 1px solid rgba(124,156,255,0.18);
       border-radius: 18px;
-      padding: 14px;
+      padding: 16px;
     }
 
     .alert {
-      padding: 12px 14px;
+      padding: 14px 16px;
       border-radius: 16px;
       background: rgba(255, 204, 102, 0.10);
-      border: 1px solid rgba(255, 204, 102, 0.16);
+      border: 1px solid rgba(255, 204, 102, 0.18);
       color: #ffe6a6;
-      font-size: 13px;
+      font-size: 13.5px;
       line-height: 1.45;
     }
 
@@ -309,7 +363,7 @@
       border: 1px solid var(--line);
       border-radius: 22px;
       padding: 16px;
-      margin-top: 18px;
+      margin-top: 20px;
     }
 
     code, .mono {
@@ -341,8 +395,8 @@
       .card.span-7 { grid-column: span 7; }
       .card.span-8 { grid-column: span 8; }
       .card.span-12 { grid-column: span 12; }
-      .session-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-      .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .schedule-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .session-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -354,224 +408,327 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <div class="eyebrow">Dashboard físico</div>
-      <h1>Fuerte, atlético y móvil.</h1>
-      <p class="subtitle">Versión visual de tu bloque actual. Hecho para abrir desde el celu, ver rápido qué toca cada día y pasarme feedback por chat sin vueltas.</p>
+      <div class="eyebrow">Esquema Pro — Blueprint Prime</div>
+      <h1>Fuerza Atlética + Hyrox</h1>
+      <p class="subtitle">Selección quirúrgica de ejercicios para rendimiento de élite, estética densa y blindaje articular completo del menisco derecho.</p>
 
       <div class="hero-grid">
         <div class="pill-card">
-          <div class="pill-label">Frecuencia</div>
-          <div class="pill-value">3 días fijos + 1 opcional</div>
+          <div class="pill-label">Distribución Semanal</div>
+          <div class="pill-value">3 Gym + 2 Hyrox</div>
         </div>
         <div class="pill-card">
-          <div class="pill-label">Duración</div>
-          <div class="pill-value">55-60 min</div>
+          <div class="pill-label">Duración Sesiones Gym</div>
+          <div class="pill-value">45-50 min</div>
         </div>
         <div class="pill-card">
-          <div class="pill-label">Experiencia</div>
-          <div class="pill-value">~10 años de pesas + funcional</div>
+          <div class="pill-label">Intensidad Clave</div>
+          <div class="pill-value">RPE 8 (1-2 en reserva)</div>
         </div>
         <div class="pill-card">
-          <div class="pill-label">Cuidado</div>
-          <div class="pill-value">Menisco derecho: controlado</div>
+          <div class="pill-label">Blindaje Articular</div>
+          <div class="pill-value">Menisco rodilla derecha</div>
         </div>
       </div>
 
       <nav class="quick-nav">
-        <a href="#objetivo">Objetivo</a>
-        <a href="#estructura">Estructura</a>
-        <a href="#dias">Días</a>
-        <a href="#saltos">Saltos</a>
+        <a href="#calendario">Calendario</a>
+        <a href="#rutinas">Rutinas Gym</a>
+        <a href="#progresion">Reglas de Progresión</a>
         <a href="#metricas">Métricas</a>
         <a href="#feedback">Feedback</a>
       </nav>
     </section>
 
-    <h2 class="section-title" id="objetivo">Objetivo y reglas</h2>
-    <section class="cards">
-      <article class="card span-7">
-        <h2>Qué estamos buscando</h2>
-        <ul class="goal-list">
-          <li><span class="dot"></span><div><strong>Fuerza útil</strong><div class="muted">Mantener y subir fuerza sin convertirte en un bloque duro.</div></div></li>
-          <li><span class="dot"></span><div><strong>Potencia real</strong><div class="muted">Saltar, acelerar, empujar y moverte rápido en fresco.</div></div></li>
-          <li><span class="dot"></span><div><strong>Estética atlética</strong><div class="muted">Buen físico, pero como consecuencia de rendir mejor.</div></div></li>
-          <li><span class="dot"></span><div><strong>Movilidad y resiliencia</strong><div class="muted">Cadera, tobillo, torácica, cadena posterior y control unilateral.</div></div></li>
-        </ul>
-      </article>
-
-      <article class="card span-5">
-        <h2>Reglas del bloque</h2>
-        <ul class="notes-list">
-          <li><span class="dot"></span><div>Explosivo primero.</div></li>
-          <li><span class="dot"></span><div>Fuerza después.</div></li>
-          <li><span class="dot"></span><div>Unilateral y posterior siempre.</div></li>
-          <li><span class="dot"></span><div>Movilidad breve, constante.</div></li>
-          <li><span class="dot"></span><div>No perseguir fatiga por fatiga.</div></li>
-        </ul>
-      </article>
-    </section>
-
-    <h2 class="section-title" id="estructura">Estructura semanal</h2>
+    <!-- CALENDARIO SEMANAL -->
+    <h2 class="section-title" id="calendario">Estructura semanal & Recuperación</h2>
     <section class="cards">
       <article class="card span-12">
-        <div class="stats">
-          <div class="stat">
-            <strong>Día 1</strong>
-            Lower fuerza + potencia
+        <div class="schedule-grid">
+          <div class="schedule-item gym">
+            <span class="schedule-day">Lunes</span>
+            <span class="schedule-title">🏋️‍♂️ Gym — Upper Fuerza & Potencia</span>
+            <span class="schedule-detail">Tensión mecánica pesada, empuje, tirón y hombro 3D (50 min)</span>
           </div>
-          <div class="stat">
-            <strong>Día 2</strong>
-            Upper fuerza + potencia
+          <div class="schedule-item hyrox">
+            <span class="schedule-day">Martes (18:00)</span>
+            <span class="schedule-title">⚡ Hyrox Clase</span>
+            <span class="schedule-detail">Piernas + Motor aeróbico/láctico (programado por el profe)</span>
           </div>
-          <div class="stat">
-            <strong>Día 3</strong>
-            Atlético lower/full body
+          <div class="schedule-item gym">
+            <span class="schedule-day">Miércoles</span>
+            <span class="schedule-title">🛡️ Gym — Torso Hipertrofia & Brazos</span>
+            <span class="schedule-detail">Cero fatiga en piernas. Pecho superior, deltoides y brazos (45 min)</span>
           </div>
-          <div class="stat">
-            <strong>Día 4</strong>
-            Upper opcional + estética útil
+          <div class="schedule-item hyrox">
+            <span class="schedule-day">Jueves (18:00)</span>
+            <span class="schedule-title">⚡ Hyrox Clase</span>
+            <span class="schedule-detail">Piernas + Sleds, Wall balls y Carrera metabólica</span>
+          </div>
+          <div class="schedule-item gym">
+            <span class="schedule-day">Viernes (o Sábado AM)</span>
+            <span class="schedule-title">🧱 Gym — Lower Fuerza & Blindaje</span>
+            <span class="schedule-detail">Trap Bar, Búlgaras, RDL y Copenhagen post-Hyrox (50 min)</span>
+          </div>
+          <div class="schedule-item rest">
+            <span class="schedule-day">Fin de Semana</span>
+            <span class="schedule-title">💤 Descanso & Supercompensación</span>
+            <span class="schedule-detail">48-72 hs de ventana de recuperación total en piernas hasta el martes</span>
           </div>
         </div>
       </article>
     </section>
 
-    <h2 class="section-title" id="dias">Sesiones</h2>
+    <!-- RUTINAS DETALLADAS -->
+    <h2 class="section-title" id="rutinas">Selección Quirúrgica de Ejercicios</h2>
     <section class="session-columns">
+      <!-- DÍA 1 -->
       <article class="session-card">
         <div class="session-top">
           <div>
-            <div class="session-name">Día 1 — Lower fuerza + potencia</div>
-            <p class="session-desc">Base pesada, unilateral y cadena posterior.</p>
+            <div class="session-name">1. Lunes — Upper Fuerza Máxima & Potencia</div>
+            <p class="session-desc">Tensión mecánica pesada en torso y deltoides.</p>
           </div>
-          <div class="tag">55-60 min</div>
+          <div class="tag accent">50 min</div>
         </div>
 
-        <div class="exercise"><div><strong>Warm-up</strong><span>tobillo + cadera + glúteo + goblet suave</span></div><div class="set-box">8 min</div></div>
-        <div class="exercise"><div><strong>Box jump / broad jump / trap bar jump</strong><span>potencia en fresco, aterrizajes limpios</span></div><div class="set-box">5-6 x 3</div></div>
-        <div class="exercise"><div><strong>Trap bar deadlift</strong><span>fuerza principal, carga progresiva</span></div><div class="set-box">4 x 4</div></div>
-        <div class="exercise"><div><strong>Bulgarian split squat</strong><span>unilateral, control y estabilidad</span></div><div class="set-box">3 x 8</div></div>
-        <div class="exercise"><div><strong>RDL</strong><span>isquios, glúteo, espalda posterior</span></div><div class="set-box">3 x 8</div></div>
-        <div class="exercise"><div><strong>Farmer carry / Pallof</strong><span>core y rigidez útil</span></div><div class="set-box">3 series</div></div>
+        <div class="exercise">
+          <div>
+            <strong>1. Potencia Torso</strong>
+            <span>Medball Slams al piso o Push Press explosivo (SNC fresco, máxima velocidad)</span>
+          </div>
+          <div class="set-box">3-4 x 4</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>2. Fuerza Empuje Pesado</strong>
+            <span>Press Banca plano (barra o mancuernas pesadas, RPE 8-8.5)</span>
+          </div>
+          <div class="set-box">4 x 5</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>3. Fuerza Tirón Pesado</strong>
+            <span>Dominadas lastradas (o agarre neutro estricto)</span>
+          </div>
+          <div class="set-box">4 x 5</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>4. Espalda Densidad</strong>
+            <span>Remo con apoyo en pecho (Chest-supported) o con barra</span>
+          </div>
+          <div class="set-box">3 x 8</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>5. Hombros (Estética)</strong>
+            <span>Elevaciones laterales con mancuerna o polea (control excéntrico)</span>
+          </div>
+          <div class="set-box">3 x 12-15</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>6. Core Anti-extensión</strong>
+            <span>Rueda abdominal o Plancha Hollow</span>
+          </div>
+          <div class="set-box">3 x 30-45s</div>
+        </div>
       </article>
 
+      <!-- DÍA 2 -->
       <article class="session-card">
         <div class="session-top">
           <div>
-            <div class="session-name">Día 2 — Upper fuerza + potencia</div>
-            <p class="session-desc">Empuje, tirón, hombro sano y torso fuerte.</p>
+            <div class="session-name">2. Miércoles — Torso Hipertrofia, Hombros 3D & Brazos</div>
+            <p class="session-desc">Cero estrés en piernas (pre-Hyrox). Volumen estético clave.</p>
           </div>
-          <div class="tag">55-60 min</div>
+          <div class="tag accent">45 min</div>
         </div>
 
-        <div class="exercise"><div><strong>Warm-up</strong><span>torácica + escápulas + rotadores</span></div><div class="set-box">6-8 min</div></div>
-        <div class="exercise"><div><strong>Push press / flexiones explosivas</strong><span>potencia upper</span></div><div class="set-box">4 x 3-5</div></div>
-        <div class="exercise"><div><strong>Press banca</strong><span>fuerza horizontal</span></div><div class="set-box">4 x 4-6</div></div>
-        <div class="exercise"><div><strong>Dominadas</strong><span>fuerza relativa y espalda</span></div><div class="set-box">4 x 5-6</div></div>
-        <div class="exercise"><div><strong>Remo pecho apoyado</strong><span>tirón limpio sin robar</span></div><div class="set-box">3 x 8-10</div></div>
-        <div class="exercise"><div><strong>Inclinado + laterales + face pull</strong><span>estética útil, no volumen basura</span></div><div class="set-box">2-3 series</div></div>
+        <div class="exercise">
+          <div>
+            <strong>1. Pecho Superior</strong>
+            <span>Press Inclinado con mancuernas (30°)</span>
+          </div>
+          <div class="set-box">3 x 8-10</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>2. Pectoral Tensión Continua</strong>
+            <span>Cruces en polea baja/media o Pec Deck</span>
+          </div>
+          <div class="set-box">3 x 10-12</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>3. Espalda Media / Escapular</strong>
+            <span>Remo en polea baja (neutro) o Remo en T</span>
+          </div>
+          <div class="set-box">3 x 8-10</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>4. Deltoides Posterior & Manguito</strong>
+            <span>Face Pulls en polea alta con cuerda (postura y estabilidad)</span>
+          </div>
+          <div class="set-box">3 x 15</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>5. Bíceps (Superserie)</strong>
+            <span>Curl en banco inclinado con mancuernas o Barra Z</span>
+          </div>
+          <div class="set-box">3 x 10-12</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>6. Tríceps (Superserie)</strong>
+            <span>Extensiones en polea (cuerda o barra recta)</span>
+          </div>
+          <div class="set-box">3 x 10-12</div>
+        </div>
       </article>
 
+      <!-- DÍA 3 -->
       <article class="session-card">
         <div class="session-top">
           <div>
-            <div class="session-name">Día 3 — Atlético lower / full body</div>
-            <p class="session-desc">El día que más te saca del modo gym bro.</p>
+            <div class="session-name">3. Viernes / Sábado — Lower Fuerza Pura & Blindaje</div>
+            <p class="session-desc">Piernas de acero y blindaje de menisco post-Hyrox.</p>
           </div>
-          <div class="tag">55-60 min</div>
+          <div class="tag accent">50 min</div>
         </div>
 
-        <div class="exercise"><div><strong>Warm-up</strong><span>tobillo + cadera + glúteo medio + activación</span></div><div class="set-box">8 min</div></div>
-        <div class="exercise"><div><strong>Prowler / sprint corto / broad jump</strong><span>velocidad o potencia sin exceso</span></div><div class="set-box">6-8 pasadas / 5x3</div></div>
-        <div class="exercise"><div><strong>Front squat o goblet pesada</strong><span>fuerza secundaria según rodilla</span></div><div class="set-box">3 x 6-8</div></div>
-        <div class="exercise"><div><strong>Step-up o walking lunge</strong><span>unilateral y locomoción</span></div><div class="set-box">3 x 8</div></div>
-        <div class="exercise"><div><strong>Curl femoral + hip thrust</strong><span>posterior y resiliencia</span></div><div class="set-box">3 series</div></div>
-        <div class="exercise"><div><strong>Copenhagen + movilidad</strong><span>aductores, cadera, isquios</span></div><div class="set-box">2-3 + 5 min</div></div>
-      </article>
-
-      <article class="session-card">
-        <div class="session-top">
+        <div class="exercise">
           <div>
-            <div class="session-name">Día 4 — Upper opcional</div>
-            <p class="session-desc">Para sumar músculo útil sin romper la semana.</p>
+            <strong>1. Potencia Pura</strong>
+            <span>Box Jumps (aterrizaje suave y controlado, frescura total)</span>
           </div>
-          <div class="tag">50-60 min</div>
+          <div class="set-box">3-4 x 3</div>
         </div>
 
-        <div class="exercise"><div><strong>Slams / flexiones explosivas</strong><span>arranque rápido, poco volumen</span></div><div class="set-box">4 x 4-5</div></div>
-        <div class="exercise"><div><strong>Press militar</strong><span>fuerza vertical</span></div><div class="set-box">4 x 6</div></div>
-        <div class="exercise"><div><strong>Chin ups o jalón</strong><span>espalda y brazos</span></div><div class="set-box">3 x 8-10</div></div>
-        <div class="exercise"><div><strong>Remo unilateral</strong><span>estabilidad y dorsal</span></div><div class="set-box">3 x 10</div></div>
-        <div class="exercise"><div><strong>Fondos / curls / tríceps / laterales</strong><span>hipertrofia complementaria</span></div><div class="set-box">2-3 series</div></div>
-        <div class="exercise"><div><strong>Movilidad hombro / torácica</strong><span>salís mejor de lo que entraste</span></div><div class="set-box">5 min</div></div>
+        <div class="exercise">
+          <div>
+            <strong>2. Fuerza Base Cadena Posterior</strong>
+            <span>Trap Bar Deadlift (carga progresiva pesada, bisagra pura)</span>
+          </div>
+          <div class="set-box">4 x 4</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>3. Estabilidad & Rodilla</strong>
+            <span>Bulgarian Split Squat con mancuernas (tempo 3-0-1 controlado)</span>
+          </div>
+          <div class="set-box">3 x 6-8 /p</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>4. Isquios & Tendón</strong>
+            <span>RDL (Peso Muerto Rumano) o Curl Femoral en máquina</span>
+          </div>
+          <div class="set-box">3 x 8-10</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>5. Blindaje Aductores & Cadera</strong>
+            <span>Copenhagen Planks (estabilidad pélvica y rodilla)</span>
+          </div>
+          <div class="set-box">3 x 20-30s /l</div>
+        </div>
+
+        <div class="exercise">
+          <div>
+            <strong>6. Fuerza Agarre & Postura</strong>
+            <span>Farmer Walks pesados con mancuernas o Trap Bar</span>
+          </div>
+          <div class="set-box">3 pasadas</div>
+        </div>
       </article>
     </section>
 
-    <h2 class="section-title" id="saltos">Aclaración sobre los saltos</h2>
+    <!-- REGLAS DE PROGRESIÓN Y BLINDAJE -->
+    <h2 class="section-title" id="progresion">Reglas de Progresión & Blindaje</h2>
     <section class="cards">
-      <article class="card span-7">
+      <article class="card span-6">
         <div class="highlight">
-          <h3>La lógica no es “cuántos puedo hacer”.</h3>
-          <p>La lógica es <strong>cuántos puedo hacer manteniendo potencia real</strong>. Que puedas hacer 10+ box jumps no significa que convenga programarlos así. Para potencia, mejor pocas reps de altísima calidad.</p>
+          <h3>📊 Sobrecarga Progresiva Quirúrgica</h3>
+          <p>En los ejercicios principales (<strong>Press Banca, Dominadas, Trap Bar Deadlift</strong>):</p>
+          <ul class="goal-list">
+            <li><span class="dot"></span><div><strong>Incremento semanal:</strong> Buscar sumar 1 repetición o subir 1.25 a 2.5 kg por semana manteniendo técnica limpia.</div></li>
+            <li><span class="dot"></span><div><strong>Gestión de RPE 8:</strong> Dejar siempre 1-2 repeticiones en el tanque. Nunca ir al fallo absoluto para preservar el SNC de cara a las clases de Hyrox.</div></li>
+          </ul>
         </div>
       </article>
-      <article class="card span-5">
+
+      <article class="card span-6">
         <div class="alert">
-          <strong>Para vos:</strong> por experiencia y base, arrancaría con <strong>5x3</strong> y, si el cajón es muy fácil, subiría a <strong>6x3</strong> o cambiaría dificultad antes que meter volumen basura.
+          <h3>🛡️ Protocolo Menisco & Fatiga Concurrente</h3>
+          <ul class="notes-list">
+            <li><span class="dot cyan"></span><div><strong>Monopolio del estímulo de impacto:</strong> Hyrox ya aporta el volumen metabólico y de rebote. En el gym los saltos son mínimos y con aterrizaje suave.</div></li>
+            <li><span class="dot cyan"></span><div><strong>Descanso de piernas:</strong> Cero ejercicios de pierna el miércoles. Toda la fuerza pesada va el viernes/sábado para tener 72 hs libres hasta el martes.</div></li>
+          </ul>
         </div>
       </article>
     </section>
 
-    <h2 class="section-title" id="metricas">Qué mirar cada semana</h2>
+    <!-- MÉTRICAS -->
+    <h2 class="section-title" id="metricas">Qué Monitoreamos</h2>
     <section class="cards">
       <article class="card span-6">
-        <h2>Métricas físicas</h2>
+        <h2>Cargas Clave de Rendimiento</h2>
         <ul class="metric-list">
-          <li><span class="dot"></span><div>peso corporal</div></li>
-          <li><span class="dot"></span><div>cintura</div></li>
-          <li><span class="dot"></span><div>fotos frente/lado cada 2 semanas</div></li>
-          <li><span class="dot"></span><div>sueño y energía</div></li>
+          <li><span class="dot"></span><div>Trap Bar Deadlift (4x4)</div></li>
+          <li><span class="dot"></span><div>Press Banca plano (4x5)</div></li>
+          <li><span class="dot"></span><div>Dominadas lastradas / neutras (4x5)</div></li>
+          <li><span class="dot"></span><div>Bulgarian Split Squat (3x6-8)</div></li>
+          <li><span class="dot"></span><div>RDL / Peso Muerto Rumano (3x8-10)</div></li>
         </ul>
       </article>
+
       <article class="card span-6">
-        <h2>Métricas de rendimiento</h2>
+        <h2>Señales de Control & Bienestar</h2>
         <ul class="metric-list">
-          <li><span class="dot"></span><div>trap bar deadlift</div></li>
-          <li><span class="dot"></span><div>press banca</div></li>
-          <li><span class="dot"></span><div>dominadas</div></li>
-          <li><span class="dot"></span><div>Bulgarian split squat</div></li>
-          <li><span class="dot"></span><div>push press</div></li>
-          <li><span class="dot"></span><div>prowler / sprint / broad jump</div></li>
-        </ul>
-      </article>
-      <article class="card span-12">
-        <h2>Señales de control</h2>
-        <ul class="metric-list">
-          <li><span class="dot"></span><div>dolor de rodilla <span class="warn">0-10</span></div></li>
-          <li><span class="dot"></span><div>rigidez cadera/tobillo <span class="warn">0-10</span></div></li>
-          <li><span class="dot"></span><div>fatiga general <span class="warn">0-10</span></div></li>
-          <li><span class="dot"></span><div>ganas de entrenar <span class="good">0-10</span></div></li>
+          <li><span class="dot cyan"></span><div>Dolor/molestia rodilla derecha <span class="warn">0-10</span></div></li>
+          <li><span class="dot cyan"></span><div>Fatiga general / recuperación SNC <span class="warn">0-10</span></div></li>
+          <li><span class="dot cyan"></span><div>Sensación en Hyrox post-gym <span class="good">0-10</span></div></li>
+          <li><span class="dot cyan"></span><div>Calidad de sueño y energía diaria <span class="good">0-10</span></div></li>
         </ul>
       </article>
     </section>
 
-    <h2 class="section-title" id="feedback">Formato para pasarme feedback</h2>
+    <!-- FEEDBACK RÁPIDO -->
+    <h2 class="section-title" id="feedback">Registro Rápido por Chat</h2>
     <section class="cards">
       <article class="card span-12">
-        <div class="copy-box">semana 1
-Día 1
-box jump 5x3
-trap bar 100kg 4x4
-Bulgarian 22kg 3x8
-RDL 80kg 3x8
-rodilla 2/10
-energía 7/10
-sentí fácil trap bar, rodilla bien en split squat</div>
+        <p class="muted" style="margin-top:0;">Copiás, completás con tus datos y me lo mandás por acá para que lo asiente:</p>
+        <div class="copy-box">Lunes — Upper Fuerza
+- Push press: 4x4 con X kg
+- Press banca: 4x5 con X kg
+- Dominadas: 4x5 con +X kg
+- Remo: 3x8 con X kg
+- Laterales: 3x12 con X kg
+- Core: 3 series completas
+- Rodilla / Sensaciones: 0/10 molestia, energía 8/10</div>
       </article>
     </section>
 
     <section class="footer-box">
-      <strong>Archivos</strong>
-      <p class="muted">Markdown de seguimiento: <span class="mono">/opt/data/obsidian-vault/40-health/dashboard-fisico.md</span><br/>Vista visual mobile-friendly: <span class="mono">/opt/data/obsidian-vault/40-health/dashboard-fisico.html</span></p>
+      <strong>Blueprint Físico & Arquitectura</strong>
+      <p class="muted">Exocórtex KB: <span class="mono">/opt/kb/perfil/entrenamiento.md</span><br/>Dashboard online: <a href="https://romer77.github.io/dashboard-fisico-pages/" target="_blank" style="color:var(--accent); text-decoration:none;">romer77.github.io/dashboard-fisico-pages</a></p>
     </section>
   </div>
 </body>
